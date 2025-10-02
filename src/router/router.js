@@ -12,3 +12,11 @@ const routes = [
     {path: '/perfil',            component: Profile,},
 
 ];
+
+const router = createRouter({
+    routes,
+    history: createWebHistory,
+    linkActiveClass: 'active',
+ });
+
+export default router;
