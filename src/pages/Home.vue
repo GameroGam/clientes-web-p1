@@ -1,8 +1,14 @@
-<script>
+<script >
+import MakePost from '../components/MakePost.vue';
+
+
 export default {
     name: 'Home',
+    components: {MakePost}
 }
 </script>
-<template>
 
+<template>
+   <MakePost/>
+   <Posts />
 </template>

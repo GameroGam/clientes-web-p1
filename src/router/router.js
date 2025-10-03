@@ -5,7 +5,6 @@ import Login from '../pages/Login.vue';
 import Profile from '../pages/Profile.vue';
 
 const routes = [
-
     {path: '/',                  component: Home,},
     {path: '/crear-cuenta',      component: Register,},
     {path: '/iniciar-sesión',    component: Login,},
@@ -15,8 +14,8 @@ const routes = [
 
 const router = createRouter({
     routes,
-    history: createWebHistory,
+    history: createWebHistory(),
     linkActiveClass: 'active',
- });
+});
 
 export default router;
