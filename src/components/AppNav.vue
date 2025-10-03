@@ -16,7 +16,7 @@
                     <RouterLink to="/crear-cuenta">Registrarse</RouterLink>
                 </li>
                 <li>
-                    <RouterLink to="/perfil">Mi perfil</RouterLink>
+                    <RouterLink to="/iniciar-sesión">Ingresar</RouterLink>
                 </li>
             </ul>
         </nav>
