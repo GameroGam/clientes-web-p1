@@ -1,9 +1,11 @@
 <script>
+import AppFooter from '../components/AppFooter.vue';
 import FormAuth from '../components/FormAuth.vue';
+
 
 export  default {
     name: 'Register',
-    components: {FormAuth},
+    components: {FormAuth, AppFooter},
     methods: {
         createAccount(email, name, password) {
             console.log('Funciono!');
@@ -16,4 +18,6 @@ export  default {
     <div class="h-100">
         <FormAuth :onSubmit="createAccount" action="Registrarse">Crear cuenta</FormAuth>
     </div>
+
+    
 </template>

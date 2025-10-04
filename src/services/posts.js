@@ -29,6 +29,15 @@ export async function getAllPosts() {
     return data;
 } 
 
+export async function getPostsByUser(email) {
+    const { data, error } = await supabase.from('posts').select().eq('email', email).order('id', {ascending: true});
+    
+    if(error) {
+        console.log('[services/posts.js -> getPostsByUser] Hubo un error al intentar obtener los posteos', error);
+        throw new Error(error.message);
+    }
+}
+
 export function suscribeToPosts(callback) {
     const chatChannel = supabase.channel('posts');
 
