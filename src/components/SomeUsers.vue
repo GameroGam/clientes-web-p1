@@ -32,8 +32,8 @@
 <template>
     <section>
         <ul>
-            <li v-for="user of someUsers" :key="user.id" >
-                <h3>{{ user.name }}</h3>
+            <li v-for="user of someUsers" :key="user.id" class="my-2">
+                <h3  class="font-bold text-[1.2rem]">{{ user.name }}</h3>
                 <p>{{ user.description }}</p>
             </li>
         </ul>

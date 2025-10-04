@@ -1,38 +1,33 @@
 <script>
-import { getMostUsedWords, getPostTrendencies } from '../services/posts';
+import { getMostUsedWords, getPostTendencies } from '../services/posts';
 
     export default {
         name: 'WhatsHappening',
         data() {
             return {
-                trendencies: []
+                trendencies: [],
+                wordsTrendencies: []
             }
         },
         methods: {
-            async getTendendices() {
-                try {
-                    console.log('obteniendo tendencias...');
-                    const wordsTrendencies = await getMostUsedWords();
-                    await getPostTrendencies(wordsTrendencies);
-
-                } catch(err) {
-                    console.log('Hubo un error al intentar traer las tendencias', err);
-                }
+            async getWordsTrendencies() {
+                this.wordsTrendencies = await getMostUsedWords();
             }
         },
         mounted() {
-            this.getTendendices();
+            this.getWordsTrendencies();
         }
     }
-
 </script>
 
 
 <template>
     <ul>
-        <li v-for="trend of trendencies" :key="trend.id">
-            <h3>{{ trend.name }}</h3>
-            <span>{{ trend.quantity }} posts</span>
+        <li v-for="wordTrend of wordsTrendencies" :key="wordTrend.id" class="my-2">
+            <RouterLink :to="{ name: 'Tendencias', params: { palabra: wordTrend.word}}">
+                <h3 class="font-bold text-[1.2rem]">{{ wordTrend.word }}</h3>
+                <span class="text-[.8rem]">Ver tendencia</span>
+            </RouterLink>
         </li>
     </ul>
 </template>
