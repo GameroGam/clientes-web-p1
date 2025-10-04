@@ -1,2 +1,12 @@
 @import "tailwindcss";
 
+body {
+    background-color: rgb(24, 24, 24);
+    color: white;
+    font-family: "Space Mono", monospace;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Press Start 2P", system-ui;
+}
+

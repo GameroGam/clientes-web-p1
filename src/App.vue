@@ -10,7 +10,7 @@ export default {
 
 <template>
   <AppNav />
-  <main>
+  <main class=" container mx-auto">
     <RouterView />
   </main>
  <AppFooter />

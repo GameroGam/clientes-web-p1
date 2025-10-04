@@ -6,9 +6,9 @@
 
 <template>
     <header>
-        <nav class=" bg-cyan-950 text-neutral-50 flex justify-around">
-            <RouterLink to="/"><h1>Twitter</h1></RouterLink>
-            <ul class="flex justify-around">
+        <nav class=" bg-cyan-950 text-neutral-50 flex justify-around p-4">
+            <RouterLink to="/"><h1>Press Start</h1></RouterLink>
+            <ul class="flex justify-around gap-3">
                 <li>
                     <RouterLink to="/perfil">Mi perfil</RouterLink>
                 </li>

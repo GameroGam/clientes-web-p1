@@ -13,5 +13,7 @@ export  default {
 }
 </script>
 <template>
-    <FormAuth :onSubmit="createAccount" action="Registrarse">Crear cuenta</FormAuth>
+    <div class="h-100">
+        <FormAuth :onSubmit="createAccount" action="Registrarse">Crear cuenta</FormAuth>
+    </div>
 </template>

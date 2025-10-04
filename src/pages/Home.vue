@@ -10,6 +10,8 @@ export default {
 </script>
 
 <template>
-   <MakePost/>
-   <AllPosts />
+   <div class="flex flex-col items-center">
+        <MakePost/>
+        <AllPosts />
+   </div>
 </template>
