@@ -9,6 +9,7 @@ const routes = [
     {path: '/crear-cuenta',      component: Register,},
     {path: '/iniciar-sesión',    component: Login,},
     {path: '/perfil',            component: Profile,},
+    {path: '/perfil/:email',     component: Profile, props: true,},
 
 ];
 
