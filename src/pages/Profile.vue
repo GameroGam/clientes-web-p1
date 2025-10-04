@@ -6,15 +6,10 @@ import UserPosts from '../components/UserPosts.vue';
 export default {
     name: 'Profile',
     components: {UserInfo, UserPosts},
-    data() {
-        return {
-            user: {
-                name: null,
-                email: null,
-                bio: null,
-
-
-            },
+    props: {
+        email: {
+            type: String,
+            required: true
         }
     },
 }
@@ -23,8 +18,8 @@ export default {
 
 <template>
     <div>
-        <h1>Perfil de usuario</h1>
-        <UserInfo />
-        <UserPosts />    
+        <h1>Perfil de {{ email }}</h1>
+        <UserInfo :email="email" />
+        <UserPosts :email="email" />    
     </div>
 </template>
