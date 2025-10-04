@@ -1,13 +1,17 @@
 <script>
 import FormAuth from '../components/FormAuth.vue';
+import { register } from '../services/auth';
 
 export  default {
     name: 'Register',
     components: {FormAuth},
     methods: {
-        createAccount(email, name, password) {
-            console.log('Funciono!');
-            console.log(email, name, password);
+        async createAccount(email, name, password) {
+            try {
+                await register(email, name, password);
+            } catch (err) {
+                console.log('Hubo un error al intentar registrar el usuario', err);
+            }
         }
     }
 }

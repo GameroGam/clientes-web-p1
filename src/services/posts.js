@@ -61,25 +61,6 @@ export function suscribeToPosts(callbackNewPost, callbackNewChange) {
     postChannel.subscribe();
 }
 
-// export async function suscribeToPostChanges(callback) {
-//     const postChannel = supabase.channel('posts');
-
-//     postChannel.on(
-//         'postgres_changes',
-//         {
-//             event: 'UPDATE',
-//             table: 'posts', 
-//             schema: 'public'
-//         },
-//         payload => {
-//             console.log("Recibimos una nueva actualización ", payload);
-//             callback(payload.new);
-//         }
-//     );
-
-//     postChannel.subscribe();
-// }
-
 
 export async function increaseLikesToPost(postId) {
     const { data, err } = await supabase.from('posts').select('like').eq('id', postId);
@@ -132,9 +113,10 @@ export async function getMostUsedWords() {
 
 
     for (const word of words) {
-        const existing = repitences.find(repitence => repitence.word === word);
+        let cleanWord = word.replace(/[^\w\s]|_/g, '');
+        const existing = repitences.find(repitence => repitence.word === cleanWord);
         if(!existing) {
-            repitences.push({word: word, q: 1});
+            repitences.push({word: cleanWord, q: 1});
         } else {
             existing.q++;
         }
@@ -142,6 +124,8 @@ export async function getMostUsedWords() {
 
    
     repitences.sort((a, b) => b.q - a.q);
+
+    console.log(repitences);
     
     let wordTendencies = [];
     wordTendencies.push(repitences[0], repitences[1], repitences[2]);
@@ -149,15 +133,17 @@ export async function getMostUsedWords() {
     return wordTendencies;
 }
 
-export async function getPostTrendencies(wordTendencies) {
-    console.log(wordTendencies);
-    const { data, error } = await supabase.from('posts').select().or(`content.ilike.%${wordTendencies[0].word}%, content.ilike.%${wordTendencies[1].word}%, content.ilike.%${wordTendencies[2].word}%`);
+export async function getPostTendencies(wordTrend) {
+
+    const { data, error } = await supabase.from('posts').select().ilike('content', `%${wordTrend}%`);
 
     if(error) {
         console.log('[services/posts.js -> getPostTrendencies] Hubo un error al intentar obtener las posteos tendencias', error);
         throw new Error(error.message);
     }
 
-    return data;
+    
 
+    return data;
 }
+
