@@ -41,4 +41,5 @@
             <input type="submit" :value="action">
         </div>
     </form>
+
 </template>

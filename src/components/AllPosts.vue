@@ -62,7 +62,7 @@ import { getAllPosts, increaseLikesToPost, suscribeToPosts, updatedLikes } from 
                 <span class="text-gray-300">{{ post.created_at }}</span>
             </div>
             <p class="py-3">{{ post.content }}</p>
-            <button @click="increaseLike(post.id)"><i class="fa-light fa-heart"></i>{{ post.like }}</button>
+            <button @click="increaseLike(post.id)"><i class="cursor-pointer fa-light fa-heart"></i>{{ post.like }}</button>
         </div>
     </section>
 </template>
