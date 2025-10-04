@@ -38,10 +38,11 @@ export async function getPostsByUser(email) {
     }
 }
 
-export function suscribeToPosts(callback) {
-    const chatChannel = supabase.channel('posts');
 
-    chatChannel.on(
+export function suscribeToPosts(callbackNewPost, callbackNewChange) {
+    const postChannel = supabase.channel('posts');
+
+    postChannel.on(
         'postgres_changes',
         {
             event: 'INSERT',
@@ -50,18 +51,50 @@ export function suscribeToPosts(callback) {
         },
         payload => {
             console.log("Recibimos un nuevo posteo: ", payload);
-            callback(payload.new);
+            callbackNewPost(payload.new);
         }
     );
 
-    chatChannel.subscribe();
+    postChannel.on(
+        'postgres_changes',
+        {
+            event: 'UPDATE',
+            table: 'posts', 
+            schema: 'public'
+        },
+        payload => {
+            console.log("Recibimos una nueva actualización ", payload);
+            callbackNewChange(payload.new);
+        }
+    );
+
+    postChannel.subscribe();
 }
+
+// export async function suscribeToPostChanges(callback) {
+//     const postChannel = supabase.channel('posts');
+
+//     postChannel.on(
+//         'postgres_changes',
+//         {
+//             event: 'UPDATE',
+//             table: 'posts', 
+//             schema: 'public'
+//         },
+//         payload => {
+//             console.log("Recibimos una nueva actualización ", payload);
+//             callback(payload.new);
+//         }
+//     );
+
+//     postChannel.subscribe();
+// }
 
 
 export async function increaseLikesToPost(postId) {
     const { data, err } = await supabase.from('posts').select('like').eq('id', postId);
 
-    console.log(data)
+
     
     let newLikes = data[0].like + 1;
     
@@ -72,4 +105,69 @@ export async function increaseLikesToPost(postId) {
         console.log('[services/posts.js -> increaseLikesToPost] Hubo un error al intentar obtener los posteos', error);
         throw new Error(error.message);
     }
+}
+
+export async function updatedLikes() {
+    const { data, error } = await supabase.from('posts').select('like');
+
+    console.log(data);
+}
+
+export async function getMostUsedWords() {
+    const {data, error } = await supabase.from('posts').select('content');
+
+    if(error) {
+        console.log('[services/posts.js -> getMostUsedWords] Hubo un error al intentar obtener las palabras más usadas', error);
+        throw new Error(error.message);
+    }
+
+    let bannedWords = ['hola', 'como estan', 'chau', 'bien', 'mal', "a", "ante", "bajo", "cabe", "con", "contra", "de", "desde", "durante", "en", "entre", "hacia", "hasta", "mediante", "para", "por", "según", "sin", "so", "sobre", "tras", "versus", "vía"];
+
+    let words = [];
+    for(const post of data) {
+        
+        let contentArr = post.content.split(' ');
+     
+        contentArr = contentArr.map(word => word.toLowerCase());
+
+
+        contentArr.forEach(word => {
+            if(!bannedWords.includes(word)) {
+                words.push(word);
+            }
+        });
+    }
+    
+    let repitences  = []
+
+
+    for (const word of words) {
+        const existing = repitences.find(repitence => repitence.word === word);
+        if(!existing) {
+            repitences.push({word: word, q: 1});
+        } else {
+            existing.q++;
+        }
+    }
+
+   
+    repitences.sort((a, b) => b.q - a.q);
+    
+    let wordTendencies = [];
+    wordTendencies.push(repitences[0], repitences[1], repitences[2]);
+
+    return wordTendencies;
+}
+
+export async function getPostTrendencies(wordTendencies) {
+    console.log(wordTendencies);
+    const { data, error } = await supabase.from('posts').select().or(`content.ilike.%${wordTendencies[0].word}%, content.ilike.%${wordTendencies[1].word}%, content.ilike.%${wordTendencies[2].word}%`);
+
+    if(error) {
+        console.log('[services/posts.js -> getPostTrendencies] Hubo un error al intentar obtener las posteos tendencias', error);
+        throw new Error(error.message);
+    }
+
+    return data;
+
 }

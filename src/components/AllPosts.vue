@@ -1,5 +1,5 @@
 <script>
-import { getAllPosts, increaseLikesToPost, suscribeToPosts } from '../services/posts';
+import { getAllPosts, increaseLikesToPost, suscribeToPosts, updatedLikes } from '../services/posts';
 
     export default {
         name: 'AllPosts',
@@ -27,15 +27,29 @@ import { getAllPosts, increaseLikesToPost, suscribeToPosts } from '../services/p
             },
             async increaseLike(postId) {
                 await increaseLikesToPost(postId);
+               
             },
             async getNewPost() {
-                suscribeToPosts(newPost => this.posts.push(newPost));
-            }
+                await suscribeToPosts(newPost => this.posts.push(newPost), postChanged => {
+                    let pIndex = this.posts.findIndex(post => post.id === postChanged.id);
+                    if(pIndex !== -1) {
+                        this.posts.splice(pIndex, 1, postChanged);
+                    }
+                });
+            },
+            async getUpdatedLikes() {
+                await  this.updatedLikes();
+            },
+
         },
         mounted() {
             this.uploadPosts();
 
-            this.getNewPost();
+            this.getNewPost(); 
+            
+            // this.updatePosts();
+        },
+        updated() {
         }
     }
 </script>
