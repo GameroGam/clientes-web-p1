@@ -58,7 +58,7 @@ import { getAllPosts, increaseLikesToPost, suscribeToPosts, updatedLikes } from 
     <section id="posts">
         <div v-for="post of posts" :key="post.id" class="border-b-1 border-b-gray-400 py-3">
             <div class="flex items-center gap-4">
-                <router-link :to="`/perfil/${post.email}`">
+                <router-link :to="{ name: 'UserInfo', params: { id: post.user_id}}">
                     <h3 class="hover:underline">{{ post.name }}</h3>
                 </router-link>
                 <span class="text-gray-300">{{ post.created_at }}</span>

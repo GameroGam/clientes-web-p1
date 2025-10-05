@@ -6,20 +6,19 @@ import UserPosts from '../components/UserPosts.vue';
 export default {
     name: 'Profile',
     components: {UserInfo, UserPosts},
-    props: {
-        email: {
-            type: String,
-            required: true
+    data (){
+        return {
+            user_id: this.$route.params.id,
         }
-    },
+    }
 }
 
 </script>
 
 <template>
     <div>
-        <h1>Perfil de {{ email }}</h1>
-        <UserInfo :email="email" />
-        <UserPosts :email="email" />    
+        <h1>Perfil de nadie</h1>
+        <UserInfo :user_id="user_id" />
+        <UserPosts :user_id="user_id" />    
     </div>
 </template>

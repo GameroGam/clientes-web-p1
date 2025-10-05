@@ -3,21 +3,17 @@ import { getPostsByUser, increaseLikesToPost, suscribeToPosts } from '../service
 
 export default {
     name: 'UserPosts',
-    props: {
-        email: {
-            type: String,
-            required: true,
-        },
-    },
     data() {
         return {
             posts: [],
         }
     },
+    props: ['user_id'],
     methods: {
         async uploadUserPosts() {
             try {
-                this.posts = await getPostsByUser(this.email);
+                this.posts = await getPostsByUser(this.user_id);
+                console.log(this.posts);
             } catch (error) {
                 console.error('Error al obtener los posteos del usuario', error);
             }
@@ -33,7 +29,7 @@ export default {
             try {
                 await suscribeToPosts(
                     newPost => {
-                        if (newPost.email === this.email) {
+                        if (newPost.user_id === this.user_id) {
                             this.posts.push(newPost);
                         }
                     },
@@ -47,18 +43,18 @@ export default {
             } catch (error) {
                 console.error('Error al suscribirse a los posteos:', error);
             }
-        },
-        async mounted() {
-            await this.uploadUserPosts();
-            await this.suscribeToPostsOfUser();
         }
     },
+    async mounted() {
+        await this.uploadUserPosts();
+        await this.suscribeToPostsOfUser();
+    }
 }
 </script>
 
 <template>
     <section id="user-posts">
-        <h2 class="text-lg font-bold mb-4">Publicaciones de {{ email }}</h2>
+        <h2 class="text-lg font-bold mb-4">Publicaciones de nadie</h2>
         <div v-if="posts.length === 0" class="text-gray-400">Este usuario no tiene publicaciones.</div>
 
         <div v-for="post of posts" :key="post.id" class="border-b-1 border-b-gray-400 py-3">

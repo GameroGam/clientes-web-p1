@@ -1,11 +1,12 @@
 import {supabase} from './supabase';
 
-export async function createNewPost({ email, name, content, like = 0}) {
+export async function createNewPost({ email, name, content, like = 0, user_id}) {
     const { data, error } = await supabase.from('posts').insert({
         email: email,
         name: name,
         content: content,
-        like: like
+        like: like,
+        user_id: user_id
     });
 
     if(error) {
@@ -26,16 +27,21 @@ export async function getAllPosts() {
         throw new Error(error.message);
     }
 
+ 
+
     return data;
 } 
 
-export async function getPostsByUser(email) {
-    const { data, error } = await supabase.from('posts').select().eq('email', email).order('id', {ascending: true});
+export async function getPostsByUser(user_id) {
+    const { data, error } = await supabase.from('posts').select().eq('user_id', user_id).order('id', {ascending: true});
     
     if(error) {
         console.log('[services/posts.js -> getPostsByUser] Hubo un error al intentar obtener los posteos', error);
         throw new Error(error.message);
     }
+
+    console.log(data);
+    return data;
 }
 
 
@@ -104,43 +110,53 @@ export async function getMostUsedWords() {
 
     let bannedWords = ['hola', 'como estan', 'chau', 'bien', 'mal', "a", "ante", "bajo", "cabe", "con", "contra", "de", "desde", "durante", "en", "entre", "hacia", "hasta", "mediante", "para", "por", "según", "sin", "so", "sobre", "tras", "versus", "vía"];
 
-    let words = [];
-    for(const post of data) {
+    if(data.length > 0) {
+        let words = [];
+        for(const post of data) {
+            
+            let contentArr = post.content.split(' ');
         
-        let contentArr = post.content.split(' ');
-     
-        contentArr = contentArr.map(word => word.toLowerCase());
+            contentArr = contentArr.map(word => word.toLowerCase());
 
 
-        contentArr.forEach(word => {
-            if(!bannedWords.includes(word)) {
-                words.push(word);
-            }
-        });
-    }
-    
-    let repitences  = []
-
-
-    for (const word of words) {
-        let cleanWord = word.replace(/[^\w\s]|_/g, '');
-        const existing = repitences.find(repitence => repitence.word === cleanWord);
-        if(!existing) {
-            repitences.push({word: cleanWord, q: 1});
-        } else {
-            existing.q++;
+            contentArr.forEach(word => {
+                if(!bannedWords.includes(word)) {
+                    words.push(word);
+                }
+            });
         }
-    }
+        
+        let repitences  = []
 
-   
-    repitences.sort((a, b) => b.q - a.q);
 
-    console.log(repitences);
+        for (const word of words) {
+            let cleanWord = word.replace(/[^\w\s]|_/g, '');
+            const existing = repitences.find(repitence => repitence.word === cleanWord);
+            if(!existing) {
+                repitences.push({word: cleanWord, q: 1});
+            } else {
+                existing.q++;
+            }
+        }
+
     
-    let wordTendencies = [];
-    wordTendencies.push(repitences[0], repitences[1], repitences[2]);
+        repitences.sort((a, b) => b.q - a.q);
 
-    return wordTendencies;
+        console.log(repitences);
+        
+        let wordTendencies = [];
+        if(repitences.length === 1) {
+            wordTendencies.push(repitences[0]);
+        } else if(repitences.length === 2) {
+            wordTendencies.push(repitences[0], repitences[1]);
+        } else {
+            wordTendencies.push(repitences[0], repitences[1], repitences[2]);
+        }
+
+        return wordTendencies;
+    } else {
+        return [];
+    }
 }
 
 export async function getPostTendencies(wordTrend) {

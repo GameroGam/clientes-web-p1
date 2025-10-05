@@ -1,17 +1,23 @@
 <script>
 import FormAuth from '../components/FormAuth.vue';
+import { login } from '../services/auth';
 
 export  default {
     name: 'Login',
     components: {FormAuth},
     methods: {
-        login(email, name, password) {
-            console.log('Funciono!');
-            console.log(email, name, password);
+        async userLogin(email, password) {
+            try {
+                await login(email, password);
+
+                this.$router.push('/');
+            } catch(err) {
+                console.log('Hubo un error al intentar iniciar sesión', err);
+            }
         }
     }
 }
 </script>
 <template>
-    <FormAuth :onSubmit="login" action="Iniciar sesión">Iniciar sesión</FormAuth>
+    <FormAuth :onSubmit="userLogin" action="Iniciar sesión">Iniciar sesión</FormAuth>
 </template>

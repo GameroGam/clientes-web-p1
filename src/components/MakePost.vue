@@ -1,4 +1,5 @@
 <script>
+import { suscribeToAuthStateChanges } from '../services/auth';
 import { createNewPost } from '../services/posts';
 
     export default {
@@ -6,31 +7,36 @@ import { createNewPost } from '../services/posts';
         data() {
            return {
                 user: {
-                    id: 1,
-                    email: 'gamero.facundo@gmail.com',
-                    name: 'Facundo'
+                    id: null,
+                    email: null,
                 },
                 newPost: {
                     email: '',
                     name: '',
                     content: '¿Que querés postear hoy?',
-                    like: 0
+                    like: 0,
+                    user_id: '6f7e82ba-a5dd-4dbf-b84d-ab4cdb58b8f0'
                 } 
            }
         },
         methods: {
             async handleSubmit() {
+                this.newPost.content = this.newPost.content.trim();
                 try {
                     await createNewPost({
                         email: this.user.email,
                         name: this.user.name,
                         content: this.newPost.content,
-                        like: this.newPost.like
+                        like: this.newPost.like,
+                        user_id: this.newPost.user_id
                     });
                 } catch (err) {
                     console.log('Hubo un error al intentar crear un nuevo posteo', err);
                 }
             },
+        },
+        mounted() {
+            suscribeToAuthStateChanges(userState => this.user = userState);
         }
     }
 </script>
