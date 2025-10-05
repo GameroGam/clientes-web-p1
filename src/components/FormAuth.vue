@@ -6,7 +6,6 @@
         data() {
             return {
                 email: '',
-                name: '', 
                 password: ''
 
             }
@@ -17,10 +16,9 @@
         },
         props: ['onSubmit', 'action'],
         methods: {
-            handleSubmit() {
+            async handleSubmit() {
                 this.onSubmit({
                     email: this.email,
-                    name: this.name,
                     password: this.password
                 });
             }
@@ -33,15 +31,11 @@
     <form action="#" @submit.prevent="handleSubmit()">
         <div class="mb-3">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" v-model="this.email">
-        </div>
-        <div class="mb-3" v-if="route.path === '/crear-cuenta'">
-            <label for="name">Nombre</label>
-            <input type="text" id="name" name="name" v-model="this.name">
+            <input type="email" id="email" name="email" v-model="email">
         </div>
         <div class="mb-3">
             <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" autocomplete="on" v-model="this.password">
+            <input type="password" id="password" name="password" autocomplete="on" v-model="password">
         </div>
         <div>
             <input type="submit" :value="action">
