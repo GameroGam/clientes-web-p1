@@ -15,18 +15,18 @@ export default {
         }
     },
     async mounted() {
+        console.log('Email recibido por prop:', this.email);
+
         try {
             const { data, error } = await supabase
-                .from('users')
-                .select('*')
-                .eq('email', this.email)
-                .single();
+            .from('users_profile')
+            .select('name, email, bio')
+            .eq('email', this.email);
 
-            if (error) {
-                throw error;
-            }
+            if (error) throw error;
 
-            this.user = data;
+            console.log('data:', data);
+            this.user = data.length > 0 ? data[0] : null;
         } catch (error) {
             console.error('Error al obtener la información del usuario:', error);
         }

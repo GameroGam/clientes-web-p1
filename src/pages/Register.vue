@@ -10,6 +10,7 @@ export  default {
     methods: {
         async createAccount(email, name, password) {
             try {
+                this.loading = true;
                 await register(email, name, password);
             } catch (err) {
                 console.log('Hubo un error al intentar registrar el usuario', err);

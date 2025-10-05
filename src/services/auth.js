@@ -16,3 +16,15 @@ export async function register({ email, name, password}) {
 
         console.log('usuario registrado', data);
 }
+
+export async function login({ email, password }) {
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+    });
+    if(error) {
+        console.log('[auth.js login] Hubo un error al intentar iniciar sesión', error);
+        throw new Error(error.message);
+    }
+    console.log('usuario logueado epetacular', data);
+}
