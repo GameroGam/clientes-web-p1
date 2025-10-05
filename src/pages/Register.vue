@@ -8,7 +8,7 @@ export  default {
     name: 'Register',
     components: {FormAuth, AppFooter},
     methods: {
-        async createAccount(email, name, password) {
+        async createAccount({email, name, password}) {
             try {
                 this.loading = true;
                 await register(email, name, password);

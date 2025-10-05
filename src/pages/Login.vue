@@ -5,9 +5,9 @@ export  default {
     name: 'Login',
     components: {FormAuth},
     methods: {
-        login(email, name, password) {
+        login({email, password}) {
             console.log('Funciono!');
-            console.log(email, name, password);
+            console.log(email, password);
         }
     }
 }

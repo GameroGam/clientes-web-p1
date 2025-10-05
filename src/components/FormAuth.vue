@@ -1,4 +1,6 @@
 <script>
+    import { useRoute } from 'vue-router';
+
     export default {
         name: 'FormAccount',
         data() {
@@ -8,6 +10,10 @@
                 password: ''
 
             }
+        },
+        setup() {
+            const route = useRoute();
+            return { route };
         },
         props: ['onSubmit', 'action'],
         methods: {
@@ -29,7 +35,7 @@
             <label for="email">Email</label>
             <input type="email" id="email" name="email" v-model="this.email">
         </div>
-        <div class="mb-3">
+        <div class="mb-3" v-if="route.path === '/crear-cuenta'">
             <label for="name">Nombre</label>
             <input type="text" id="name" name="name" v-model="this.name">
         </div>
