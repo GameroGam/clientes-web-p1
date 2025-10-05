@@ -20,6 +20,7 @@ import { logout, suscribeToAuthStateChanges } from '../services/auth';
             suscribeToAuthStateChanges(userState => this.user = userState);
         }
     }
+
 </script>
 
 <template>

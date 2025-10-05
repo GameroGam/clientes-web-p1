@@ -10,6 +10,8 @@ export default {
     },
     props: ['user_id'],
     async mounted() {
+        console.log('Email recibido por prop:', this.email);
+
         try {
             const { data, error } = await supabase
                 .from('users_profile')

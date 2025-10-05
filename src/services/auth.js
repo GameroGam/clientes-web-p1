@@ -1,10 +1,9 @@
 import { supabase } from "./supabase";
 
-
 let user = {
-    id: null,
-    email: null
-}
+  id: null,
+  email: null
+};
 
 let observers = [];
 
