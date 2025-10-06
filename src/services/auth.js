@@ -1,8 +1,12 @@
 import { supabase } from "./supabase";
+import { getUserById } from "./ourUsers";
+import { createUserProfile } from "./ourUsers";
 
 let user = {
   id: null,
-  email: null
+  email: null,
+  name: null,
+  bio: null,
 };
 
 let observers = [];
@@ -26,23 +30,41 @@ async function loadCurrentUserAuthState() {
         email: data.user.email,
     });
 
-    // // Cargamos el perfil extendido del usuario.
-    // loadUserFullProfile();
+    
+    loadUserFullProfile(); //no hace falta el await
+}
+
+async function loadUserFullProfile() {
+        setUser(await getUserById(user.id));
 }
 
 export async function register({ email, password}) {
+    try{
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password
+        });
 
-    const { data, error } = await supabase.auth.signUp({
-        email,
-        password
-    });
+        if(error) {
+            console.log('[services/auth.js -> register] Hubo un error al intentar registrar al usuario', error);
+            throw new Error(error.message);
+        };
 
-    if(error) {
-        console.log('[services/auth.js -> register] Hubo un error al intentar registrar al usuario', error);
+        console.log('usuario registrado', data);
+
+        setUser({
+            id: data.user.id,
+            email: data.user.email,
+        });
+
+        await createUserProfile({
+            id: data.user.id,
+            email: data.user.email,
+        });
+    } catch (error) {
+        console.error('Error en el registro', error);
         throw new Error(error.message);
-    };
-
-    console.log('usuario registrado', data);
+    }
 }
 
 export async function login({ email,password}) {
@@ -71,6 +93,7 @@ export async function logout () {
         id: null,
         email: null,
     });
+    
 
 
 }
@@ -109,7 +132,7 @@ function notifyAll() {
     observers.forEach(notify);
 }
 
-function setUser(data) {
+export function setUser(data) {
     user = {
         ...user,
         ...data,

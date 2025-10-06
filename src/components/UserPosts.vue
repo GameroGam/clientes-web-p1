@@ -45,9 +45,15 @@ export default {
             }
         }
     },
-    async mounted() {
-        await this.uploadUserPosts();
-        await this.suscribeToPostsOfUser();
+    watch: { // cambio
+        user_id: {
+            immediate: true,
+            async handler(newVal) {
+            if (!newVal) return;
+            await this.uploadUserPosts();
+            await this.suscribeToPostsOfUser();
+            }
+        }
     }
 }
 </script>

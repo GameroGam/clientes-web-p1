@@ -1,48 +1,78 @@
 <script>
-import { supabase } from '../services/supabase';
+import { getUserById } from '../services/ourUsers';
+import { suscribeToAuthStateChanges } from '../services/auth';
+
+//let unsuscribeFromAuth = () => {};
 
 export default {
     name: 'UserInfo',
     data() {
         return {
-            user: 'a',
+            user: null,
+            //isOwnProfile: false,
         }
     },
-    props: ['user_id'],
+    props: {
+        user_id: String,
+        isOwnProfile: Boolean,
+    },
+    emits: ['user-loaded'],
+    // mounted(){
+    //     suscribeToAuthStateChanges(userState => this.user = userState);
+    // },
+    // unmounted(){
+    //     unsuscribeFromAuth();
+    // }
     async mounted() {
-        console.log('Email recibido por prop:', this.email);
+    await this.loadUserInfo();
+    },
 
+    watch: {
+        async user_id() {
+        await this.loadUserInfo();
+    },
+  },
+
+  methods: {
+    async loadUserInfo() {
+      this.user = null;
+
+      if (this.user_id) {
         try {
-            const { data, error } = await supabase
-                .from('users_profile')
-                .select('*')
-                .eq('email', this.user_id)
-                .limit(1);
-
-            if (error) {
-                throw new Error(error.message);
-            }
+          const userProfile = await getUserById(this.user_id);
+          this.user = userProfile;
+          this.$emit('user-loaded', userProfile);
         } catch (error) {
-            console.error('Error al obtener la información del usuario:', error);
+          console.error('Error al obtener el perfil del usuario', error);
         }
-    }
+      } else {
+        suscribeToAuthStateChanges((userState) => {
+          this.user = userState;
+          this.$emit('user-loaded', userState);
+        });
+      }
+    },
+  },
 }
 </script>
 
 <template>
-    <section>
-    <div v-if="user" class="p-4 border-b border-gray-300">
-        <h2 class="text-xl font-bold">{{ user.name }}</h2>
-        <p class="text-gray-400 text-sm">bio{{ user.bio }}</p>
-        <p class="text-gray-400 text-sm">Unido desde: </p>
-        <p class="text-gray-400">{{ user.bio }}</p>
+    <section v-if="user" class="p-4 border-b border-gray-300">
+    <h2 class="text-xl font-bold mb-2">
+      {{ user.name || user.email }}
+      <span v-if="isOwnProfile" class="text-sm text-gray-500">(vos)</span>
+    </h2>
+    <p v-if="user.bio" class="text-gray-400 text-sm mb-1">Bio: {{ user.bio }}</p>
+    <p class="text-gray-400 text-sm">
+      Unido desde: {{ new Date(user.created_at).toLocaleDateString() }}
+    </p>
+    <button @click="$router.push('/editar-perfil')">
+    Editar mi perfil
+    </button>
+  </section>
 
-    </div>
-    <div v-else>Problema con el usuario</div>
-    </section>
+  <section v-else class="p-4 text-gray-500">
+    Problema al cargar el perfil del usuario.
+  </section>
 
 </template>
-
-<style scoped>
-
-</style>

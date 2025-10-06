@@ -4,16 +4,17 @@ import Register from '../pages/Register.vue';
 import Login from '../pages/Login.vue';
 import Profile from '../pages/Profile.vue';
 import Tendencies from '../pages/Tendencies.vue';
+import ProfileEdit from '../pages/ProfileEdit.vue';
 import {suscribeToAuthStateChanges} from '../services/auth';
 
 const routes = [
-    {path: '/',                  component: Home,},
-    {path: '/crear-cuenta',      component: Register,},
-    {path: '/iniciar-sesion',    component: Login,},
-    {path: '/perfil',            component: Profile, meta: {requiresAuth: true }},
-    {path: '/perfil/:id',      name: 'UserInfo',  component: Profile, meta: {requiresAuth: true }},
-    {path: '/tendencias/:palabra', name: 'Tendencias', component: Tendencies, meta: {requiresAuth: true }}
-
+    {path: '/',                    component: Home,},
+    {path: '/crear-cuenta',        component: Register,},
+    {path: '/iniciar-sesion',      component: Login,},
+    {path: '/perfil',              component: Profile, meta: {requiresAuth: true }},
+    {path: '/perfil/:id',          name: 'UserInfo',  component: Profile, meta: {requiresAuth: true }},
+    {path: '/tendencias/:palabra', name: 'Tendencias', component: Tendencies, meta: {requiresAuth: true }},
+    {path: '/editar-perfil',       component: ProfileEdit, meta: {requiresAuth: true } }
 
 ];
 

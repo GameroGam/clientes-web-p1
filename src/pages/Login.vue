@@ -5,23 +5,15 @@ import { login } from '../services/auth';
 export  default {
     name: 'Login',
     components: {FormAuth},
-    methods: {
-        async userLogin(email, password) {
-            try {
-                await login(email, password);
-
-                this.$router.push('/');
-            } catch(err) {
-                console.log('Hubo un error al intentar iniciar sesión', err);
-            }
-        }
-    },
-    methods: {
+    methods: {//borrado el segundo method
         async handleSubmit(formData) {
             try {
                 this.loading = true;
 
-                await login({ email: this.user.email, password: this.user.password });
+                await login({ 
+                    email: formData.email, 
+                    password: formData.password 
+                });
            
                 this.$router.push('/perfil');
             } catch (error) {
@@ -33,9 +25,5 @@ export  default {
 }
 </script>
 <template>
-<<<<<<< HEAD
-    <FormAuth :onSubmit="userLogin" action="Iniciar sesión">Iniciar sesión</FormAuth>
-=======
     <FormAuth :onSubmit="handleSubmit" action="Iniciar sesión">Iniciar sesión</FormAuth>
->>>>>>> 75b9174b97f5118c9a62efdfbf9b2c97c96c64cb
 </template>
