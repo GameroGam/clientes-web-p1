@@ -41,7 +41,18 @@ import { getAllPosts, increaseLikesToPost, suscribeToPosts, updatedLikes } from 
                 await  this.updatedLikes();
             },
 
+            formatDate(datos){
+                const date = new Date(datos);
+                const anio = date.getFullYear();
+                const mes = date.getMonth() + 1;
+                const dia = date.getDate();
+                const hra = date.getHours();
+                const min = date.getMinutes();
+                return `${dia}/${mes}/${anio} - ${hra}:${min}`;
+            }
+
         },
+
         async mounted() {
             await this.uploadPosts();
 
@@ -57,12 +68,12 @@ import { getAllPosts, increaseLikesToPost, suscribeToPosts, updatedLikes } from 
         <div v-for="post of posts" :key="post.id" class="border-b-1 border-b-gray-400 py-3">
             <div class="flex items-center gap-4 px-3">
                 <router-link :to="{ name: 'UserInfo', params: { id: post.user_id}}">
-                    <h3 class="hover:underline">{{ post.name }}</h3>
+                    <h3 class="hover:underline text-blue-400 text-xl">{{ post.name }}</h3>
                 </router-link>
-                <span class="text-gray-300">{{ post.created_at }}</span>
+                <span class="text-gray-300 text-xs mt-1.5">{{ formatDate(post.created_at) }}</span>
             </div>
             <p class="py-3 px-3">{{ post.content }}</p>
-            <button @click="increaseLike(post.id)" class="px-3"><i class="cursor-pointer fa-light fa-heart"></i>{{ post.like }}</button>
+            <button @click="increaseLike(post.id)" class="px-3"><i class="cursor-pointer fa-regular fa-heart hover:text-orange-600 "></i> {{ post.like }}</button>
         </div>
     </section>
 </template>
