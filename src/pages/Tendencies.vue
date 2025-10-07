@@ -17,8 +17,8 @@
 </script>
 
 <template>
-    <section>
-        <h2 class="text-center mt-10">{{ toUpperCase() }}</h2>
+    <section class="w-200 mx-auto border-s-1 border-e-1" id="tend">
+        <h2 class="text-center py-10">{{ toUpperCase() }}</h2>
         <getPostsByWord :wordTend="wordTend"></getPostsByWord>
 
     </section>

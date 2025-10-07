@@ -25,5 +25,7 @@ export  default {
 }
 </script>
 <template>
-    <FormAuth :onSubmit="handleSubmit" action="Iniciar sesión">Iniciar sesión</FormAuth>
+    <div class="flex items-center justify-center min-h-screen">
+        <FormAuth :onSubmit="handleSubmit" action="Iniciar sesión">Iniciar sesión</FormAuth>
+    </div>
 </template>

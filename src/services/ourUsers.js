@@ -7,12 +7,16 @@ import {supabase} from './supabase';
 
 export async function getUserById(id) {
     const {data, error} = await supabase
-    .from('user_profile').select('*').eq('id', id).single();
+    .from('user_profile').select('*').eq('id', id).limit(1);
     if (error) {
         console.error('Error al traer perfil de usuario por id', error);
         throw new Error(error.message);
     }
-    return data;
+    if(data.length > 0) {
+        return data;
+    } else {
+        return null;
+    }
 }
 
 export async function createUserProfile(data) {

@@ -42,15 +42,14 @@ export default {
 </script>
 
 <template>
-    <!-- como siempre spera a que supabase cvargue el usuario actual antes de asignar 
+    <div class="w-200 mx-auto border-s-1 border-e-1">
+        <!-- como siempre spera a que supabase cvargue el usuario actual antes de asignar 
      el user_id hay un desface de picosegundos en la carga que arreglé con un v-if... 
      no se si es lo mas profesional jeje-->
-  <div v-if="user_id"> 
-    <h1 v-if="isOwnProfile">Mi perfil</h1>
-    <h1 v-else>Perfil de {{ visitedUser?.name || visitedUser?.email }}</h1>
-
-    <UserInfo :user_id="user_id" :isOwnProfile="isOwnProfile" @user-loaded="visitedUser = $event" />
-    <UserPosts :user_id="user_id" />    
-  </div>
-  <div v-else class="text-gray-500">Cargando perfil...</div>
+    <div v-if="user_id"> 
+        <UserInfo :user_id="user_id" :isOwnProfile="isOwnProfile" @user-loaded="visitedUser = $event" />
+        <UserPosts :user_id="user_id" />    
+    </div>
+    <div v-else class="text-gray-500">Cargando perfil...</div>
+    </div>
 </template>

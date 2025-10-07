@@ -42,14 +42,12 @@ import { getAllPosts, increaseLikesToPost, suscribeToPosts, updatedLikes } from 
             },
 
         },
-        mounted() {
-            this.uploadPosts();
+        async mounted() {
+            await this.uploadPosts();
 
-            this.getNewPost(); 
+            await this.getNewPost(); 
             
             // this.updatePosts();
-        },
-        updated() {
         }
     }
 </script>
@@ -57,14 +55,14 @@ import { getAllPosts, increaseLikesToPost, suscribeToPosts, updatedLikes } from 
 <template>
     <section id="posts">
         <div v-for="post of posts" :key="post.id" class="border-b-1 border-b-gray-400 py-3">
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-4 px-3">
                 <router-link :to="{ name: 'UserInfo', params: { id: post.user_id}}">
                     <h3 class="hover:underline">{{ post.name }}</h3>
                 </router-link>
                 <span class="text-gray-300">{{ post.created_at }}</span>
             </div>
-            <p class="py-3">{{ post.content }}</p>
-            <button @click="increaseLike(post.id)"><i class="cursor-pointer fa-light fa-heart"></i>{{ post.like }}</button>
+            <p class="py-3 px-3">{{ post.content }}</p>
+            <button @click="increaseLike(post.id)" class="px-3"><i class="cursor-pointer fa-light fa-heart"></i>{{ post.like }}</button>
         </div>
     </section>
 </template>

@@ -30,16 +30,17 @@ export default {
     watch: {
         async user_id() {
         await this.loadUserInfo();
+      },
     },
-  },
 
   methods: {
     async loadUserInfo() {
       this.user = null;
-
+      console.log(this.user_id, 'USER ID')
       if (this.user_id) {
         try {
           const userProfile = await getUserById(this.user_id);
+          console.log(userProfile, 'user');
           this.user = userProfile;
           this.$emit('user-loaded', userProfile);
         } catch (error) {
@@ -57,16 +58,19 @@ export default {
 </script>
 
 <template>
-    <section v-if="user" class="p-4 border-b border-gray-300">
-    <h2 class="text-xl font-bold mb-2">
-      {{ user.name || user.email }}
-      <span v-if="isOwnProfile" class="text-sm text-gray-500">(vos)</span>
-    </h2>
-    <p v-if="user.bio" class="text-gray-400 text-sm mb-1">Bio: {{ user.bio }}</p>
-    <p class="text-gray-400 text-sm">
-      Unido desde: {{ new Date(user.created_at).toLocaleDateString() }}
-    </p>
-    <button @click="$router.push('/editar-perfil')">
+    <section v-if="user" class="p-4 border-b border-gray-300 flex items-center justify-between h-50" id="userInfo">
+    <div>
+      <h2 class="text-xl font-bold mb-2">
+        {{ user[0].name || user.email }}
+        <span v-if="isOwnProfile" class="text-sm text-gray-500">(vos)</span>
+      </h2>
+      <p class="text-gray-300 mb-1" v-if="isOwnProfile">{{ user[0].bio || 'Aún no tenés una biografía' }}</p>
+      <p class="text-gray-300 mb-1" v-else>{{ user[0].bio || 'Aún no tiene una biografía' }}</p>
+      <p class="text-gray-400 text-sm">
+        Unido desde: {{ new Date(user[0].created_at).toLocaleDateString() }}
+      </p>
+    </div>
+    <button v-if="isOwnProfile" @click="$router.push('/editar-perfil')" class=" bg-blue-900 py-2 px-4 rounded-xl hover:cursor-pointer hover:opacity-95 ">
     Editar mi perfil
     </button>
   </section>

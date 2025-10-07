@@ -24,15 +24,20 @@ export default {
 
 <template>
    <div class="flex flex-col items-center">
-        <div class="flex">
-            <div>
+        <div class="flex flex-col-reverse lg:flex-row">
+            <div class="border-s-1 border-e-1">
                 <template v-if="user.id !== null">
                     <MakePost/>
                 </template>
+                <template v-else>
+                    <div class="h-40 flex items-center justify-center home-no-user">
+                        <p><span class="font-black">Iniciá sesión</span> para comenzar a postear!</p>
+                    </div>
+                </template>
                 <AllPosts />
             </div>
-            <div class="mt-6 border-s-1 ps-5">
-                <div class="mt-15 border p-3">
+            <div class="mt-6 ps-5 md:ps-0 md:ps-5 right-40 ">
+                <div class="mt-15 md:mt-2 border p-3">
                     <h2 class="pb-2 border-b-1">Explorar usuarios</h2>
                     <template v-if="user.id !== null">
                         <a href="#" class="hover:opacity-95"><SomeUsers/></a>
@@ -42,7 +47,7 @@ export default {
                     </template>
                 </div>
 
-                <div class="mt-15 border p-3">
+                <div class="mt-15 md:mt-2 border p-3">
                     <h2 class="pb-2 border-b-1">Tendencias</h2>
                     <template v-if="user.id !== null">
                         <WhatsHappening/>

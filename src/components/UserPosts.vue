@@ -60,16 +60,16 @@ export default {
 
 <template>
     <section id="user-posts">
-        <h2 class="text-lg font-bold mb-4">Publicaciones de nadie</h2>
-        <div v-if="posts.length === 0" class="text-gray-400">Este usuario no tiene publicaciones.</div>
+        <h2 class="text-lg font-bold mb-4 mt-5 px-5">Posteos</h2>
+        <div v-if="posts.length === 0" class="text-gray-400 px-5">Este usuario no tiene publicaciones.</div>
 
         <div v-for="post of posts" :key="post.id" class="border-b-1 border-b-gray-400 py-3">
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-4 px-5">
                 <h3>{{ post.name }}</h3> 
                 <span class="text-gray-300">{{ new Date(post.created_at).toLocaleString() }}</span>
             </div>
-            <p class="py-3">{{ post.content }}</p>
-            <button @click="increaseLike(post.id)">
+            <p class="py-3 px-5">{{ post.content }}</p>
+            <button @click="increaseLike(post.id)" class="px-5">
                 <i class="cursor-pointer fa-light fa-heart"></i> {{ post.like }}
             </button>
         </div>
