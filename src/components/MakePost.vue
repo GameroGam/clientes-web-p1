@@ -1,5 +1,6 @@
 <script>
 import { suscribeToAuthStateChanges } from '../services/auth';
+import { getUserById } from '../services/ourUsers';
 import { createNewPost } from '../services/posts';
 
     export default {
@@ -9,7 +10,6 @@ import { createNewPost } from '../services/posts';
                 user: {
                     id: null,
                     email: null,
-                    name: null,
                 },
                 newPost: {
                     email: '',
@@ -53,6 +53,10 @@ import { createNewPost } from '../services/posts';
             },
             goToProfile() {
                 this.$router.push('/perfil');
+            },
+            async getUserProfile() {
+                this.userProfile = await getUserById(this.user.id);
+                console.log(this.userProfile)
             }
         },
         mounted() {
@@ -71,15 +75,16 @@ import { createNewPost } from '../services/posts';
 </script>
 
 <template>
-    <section class=" w-3xl mt-6 flex flex-col items-center">
-        <h2 class="text-lg">{{ user.name || user.email }}</h2>
+    <section class=" w-3xl  flex flex-col items-center mb-8 border-b-1 pb-6 pt-11" id="make-post">
+        <!-- <h2 v-if="userProfile" class="text-lg">{{ userProfile[0].name }}</h2> -->
+        <h2 class="text-lg">{{ user.email }}</h2>
         <form action="#" @submit.prevent="handleSubmit()">
             <div>
                 <label for="content"></label>
                 <textarea name="content" id="content" v-model="newPost.content" class=" w-100 border-b-1 border-b-gray-400 p-2" @click="handleTextareaClick"></textarea>
                 
             </div>
-            <div>
+            <div class="flex justify-end">
                 <input type="submit" value="Postear" class=" bg-blue-900 py-2 px-4 rounded-xl hover:cursor-pointer hover:opacity-95 mt-3">
             </div>
         </form>

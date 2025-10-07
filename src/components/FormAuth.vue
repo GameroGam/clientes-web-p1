@@ -28,19 +28,21 @@
 </script>
 
 <template>
-    <h2><slot></slot></h2>
-    <form action="#" @submit.prevent="handleSubmit()">
-        <div class="mb-3">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" v-model="this.email">
-        </div>
-        <div class="mb-3">
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" autocomplete="on" v-model="password">
-        </div>
-        <div>
-            <input type="submit" :value="action">
-        </div>
-    </form>
+    <section class="h-100 w-100 flex flex-col items-center gap-10 border">
+        <h2 class="pt-10"><slot></slot></h2>
+        <form action="#" @submit.prevent="handleSubmit()">
+            <div class="mb-3">
+                <label for="email" class="block">Email</label>
+                <input type="email" id="email" name="email" v-model="this.email" class="border-b-1 ">
+            </div>
+            <div class="mb-3">
+                <label for="password" class="block">Contraseña</label>
+                <input type="password" id="password" name="password" autocomplete="on" v-model="password" class="border-b-1 ">
+            </div>
+            <div class="mt-10">
+                <input type="submit" :value="action" class=" bg-blue-900 py-2 px-4 rounded-xl hover:cursor-pointer hover:opacity-95 ">
+            </div>
+        </form>
+    </section>
 
 </template>

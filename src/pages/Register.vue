@@ -19,7 +19,7 @@ export  default {
 }
 </script>
 <template>
-    <div class="h-100">
+    <div class="flex items-center justify-center min-h-screen">
         <FormAuth :onSubmit="createAccount" action="Registrarse">Crear cuenta</FormAuth>
     </div>
 

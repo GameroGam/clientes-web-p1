@@ -35,7 +35,7 @@ import { logout, suscribeToAuthStateChanges } from '../services/auth';
 
 <template>
     <header>
-        <nav class=" bg-cyan-950 text-neutral-50 flex justify-around p-4">
+        <nav class="  text-neutral-50 flex justify-around p-4">
             <RouterLink to="/"><h1>Press Start</h1></RouterLink>
             <ul class="flex justify-around gap-3">
                 <li v-if="user.id !== null">

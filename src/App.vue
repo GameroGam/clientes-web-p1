@@ -9,13 +9,15 @@ export default {
 </script>
 
 <template>
-  <AppNav />
-  <main class=" container mx-auto">
-    <RouterView />
-  </main>
- <AppFooter />
+  <div class="flex flex-col min-h-screen">
+    <AppNav />
+    <main class="container mx-auto flex-1">
+      <RouterView />
+    </main>
+    <AppFooter />
+  </div>
 </template>
 
 <style scoped>
-
+  
 </style>

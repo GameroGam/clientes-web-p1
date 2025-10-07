@@ -4,6 +4,21 @@ body {
     background-color: rgb(24, 24, 24);
     color: white;
     font-family: "Space Mono", monospace;
+    &::after {
+        content: '';
+        position: fixed;
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-image: url('../src/assets/img/retro-page.jpg');
+        background-size: contain;
+     
+        top: 0;
+        left: 0;
+        z-index: -1;
+        mix-blend-mode: soft-light;
+        background-attachment: fixed;
+    }
 }
 
 h1, h2{
@@ -13,4 +28,13 @@ h1, h2{
 h3 {
     font-size: 1.5rem;
 } */
+
+
+#make-post, #tend h2, #userInfo, .home-no-user {
+    background-color: rgb(0, 0, 29);
+}
+
+nav {
+    background-color: rgb(11, 11, 54);
+}
 
