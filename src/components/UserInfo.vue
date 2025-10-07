@@ -2,14 +2,13 @@
 import { getUserById } from '../services/ourUsers';
 import { suscribeToAuthStateChanges } from '../services/auth';
 
-//let unsuscribeFromAuth = () => {};
 
 export default {
     name: 'UserInfo',
     data() {
         return {
             user: null,
-            //isOwnProfile: false,
+            unsubscribe: null,
         }
     },
     props: {
@@ -17,12 +16,6 @@ export default {
         isOwnProfile: Boolean,
     },
     emits: ['user-loaded'],
-    // mounted(){
-    //     suscribeToAuthStateChanges(userState => this.user = userState);
-    // },
-    // unmounted(){
-    //     unsuscribeFromAuth();
-    // }
     async mounted() {
     await this.loadUserInfo();
     },
@@ -37,6 +30,10 @@ export default {
     async loadUserInfo() {
       this.user = null;
 
+      if(this.unsubscribe) {
+        this.unsubscribe();
+      }
+
       if (this.user_id) {
         try {
           const userProfile = await getUserById(this.user_id);
@@ -46,13 +43,20 @@ export default {
           console.error('Error al obtener el perfil del usuario', error);
         }
       } else {
-        suscribeToAuthStateChanges((userState) => {
-          this.user = userState;
-          this.$emit('user-loaded', userState);
+        this.unsubscribe = suscribeToAuthStateChanges((userState) => {
+            this.user = userState;
+            this.$emit('user-loaded', userState);
         });
       }
     },
   },
+
+unmounted() {
+    if (this.unsubscribe) {
+        this.unsubscribe();
+        console.log('[DEBUG] Observer eliminado desde UserInfo');
+    }
+}
 }
 </script>
 

@@ -23,14 +23,22 @@ export default {
                 bio: null,
             },
             loading: false,
+            unsubscribe: null,
         }
     },
     mounted() {
-        suscribeToAuthStateChanges((userState) => {
+        this.unsubscribe = suscribeToAuthStateChanges((userState) => {
             this.user = userState;
             this.FormData.name = userState.name;
             this.FormData.bio = userState.bio;
         });
+    },
+    unmounted() {
+        console.log('[>>>UNMOUNTED_DEBUG<<<] Profile desmontado');
+        if (this.unsubscribe) {
+            this.unsubscribe();
+            console.log('[>>>UNMOUNTED_DEBUG<<<] Observer eliminado desde Profile');
+        }
     },
     methods:{
         async handlesubmit(){
@@ -52,7 +60,8 @@ export default {
             }
             this.loading=false
         },
-    }
+    },
+    
 }
 </script>
 

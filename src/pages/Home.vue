@@ -13,11 +13,21 @@ export default {
             user: {
                 id: null,
                 email: null,
-            }
+            },
+            unsubscribe: null,
         }
     },
     mounted() {
-        suscribeToAuthStateChanges(userState => this.user = userState);
+        this.unsubscribe = suscribeToAuthStateChanges(userState => {
+            this.user = userState;
+        });
+    },
+    unmounted() {
+        console.log('[>>>UNMOUNTED_DEBUG<<<] Entró al unmounted de Home');
+        if (this.unsubscribe) {
+            this.unsubscribe();
+            console.log('[>>>UNMOUNTED_DEBUG<<<] Observer eliminado desde Profile');
+        }
     }
 }
 </script>

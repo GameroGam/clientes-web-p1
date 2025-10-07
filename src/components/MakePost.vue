@@ -19,9 +19,11 @@ import { createNewPost } from '../services/posts';
                     user_id: null,
                 } ,
                 showModal: false,
+                unsubscribe: null,
            }
         },
         methods: {
+            
             handleTextareaClick(){
                 if(!this.user.name){
                     this.showModal = true;
@@ -54,7 +56,16 @@ import { createNewPost } from '../services/posts';
             }
         },
         mounted() {
-            suscribeToAuthStateChanges(userState => this.user = userState);
+            this.unsubscribe = suscribeToAuthStateChanges(userState => {
+                    this.user = userState;
+                }); 
+        },
+        unmounted() {
+            console.log('[>>>UNMOUNTED_DEBUG<<<] Profile desmontado');
+            if (this.unsubscribe) {
+                this.unsubscribe();
+                console.log('[>>>UNMOUNTED_DEBUG<<<] Observer eliminado desde Profile');
+            }
         }
     }
 </script>

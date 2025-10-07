@@ -8,7 +8,8 @@ import { logout, suscribeToAuthStateChanges } from '../services/auth';
                 user: {
                     id: null,
                     email: null,
-                }
+                },
+                unsubscribe: null,
             }
         },
         methods: {
@@ -17,7 +18,16 @@ import { logout, suscribeToAuthStateChanges } from '../services/auth';
             }
         },
         mounted() {
-            suscribeToAuthStateChanges(userState => this.user = userState);
+            this.unsubscribe = suscribeToAuthStateChanges(userState => {
+                this.user = userState;
+            });
+        },
+        unmounted() {
+            console.log('[>>>UNMOUNTED_DEBUG<<<] Profile desmontado');
+            if (this.unsubscribe) {
+                this.unsubscribe();
+                console.log('[>>>UNMOUNTED_DEBUG<<<] Observer eliminado desde Profile');
+            }
         }
     }
 

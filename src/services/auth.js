@@ -98,20 +98,20 @@ export async function logout () {
 
 }
 
-/*--------------------------------------------------------------------------
-|   Implementación de nuestro observer
-+ --------------------------------------------------------------------------*/
+
 /**
  * 
  * @param {(userState: {id: String|null, email: String|null}) => void} callback 
  */
-export async function suscribeToAuthStateChanges(callback) {
+export function suscribeToAuthStateChanges(callback) {
     observers.push(callback);
+    console.log('[>>ATENCIÓN_DEBUG<<] nuevo observer registrado', observers.length);
 
     notify(callback);
 
     return () => {
-        observers = observers.filter(obs => callback !== obs); // Desuscribimos
+        observers = observers.filter(obs => callback !== obs);
+        console.log('[>>ATENCIÓN_DEBUG<<] observer eliminado', observers.length);
     }
 }
 

@@ -12,6 +12,7 @@ export default {
             user_id: null,
             isOwnProfile: false,
             visitedUser: null,
+            unsubscribe: null,
         }
     },
     mounted() {
@@ -24,18 +25,30 @@ export default {
     },
     methods: {
         loadProfile() {
+            if (this.unsubscribe) {
+                this.unsubscribe();
+                console.log('[>>>DEBUG<<<] Observer limpiado en profile.vue');
+            };
+
             const routerId = this.$route.params.id;
 
-            suscribeToAuthStateChanges((userState) => {
+            this.unsubscribe = suscribeToAuthStateChanges((userState) => {
                 if (routerId) {
-                this.user_id = routerId;
-                this.isOwnProfile = userState.id === routerId;
+                    this.user_id = routerId;
+                    this.isOwnProfile = userState.id === routerId;
                 } else {
-                this.user_id = userState.id;
-                this.isOwnProfile = true;
+                    this.user_id = userState.id;
+                    this.isOwnProfile = true;
                 }
             });
         },
+    },
+    unmounted() {
+        console.log('[>>>UNMOUNTED_DEBUG<<<] Profile desmontado');
+        if (this.unsubscribe) {
+            this.unsubscribe();
+            console.log('[>>>UNMOUNTED_DEBUG<<<] Observer eliminado desde Profile');
+        }
     },
 };
 
