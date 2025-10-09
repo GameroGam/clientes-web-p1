@@ -43,9 +43,13 @@ export async function updateUserProfile(id, data) {
 export async function getSomeUsers() {
   const { data, error } = await supabase
     .from('user_profile')
-    .select()
-    .limit(3)
-    .not('name', 'is', null);
+    .select(`
+        id,
+        name
+    `)
+    .not('name', 'is', null)
+    .limit(3);
+
 
   if (error) {
     console.error('Error al obtener algunos usuarios', error);

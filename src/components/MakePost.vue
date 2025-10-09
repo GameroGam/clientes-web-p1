@@ -20,17 +20,18 @@ import { createNewPost } from '../services/posts';
                 } ,
                 showModal: false,
                 unsubscribe: null,
+                userName: null,
            }
         },
         methods: {
             
             handleTextareaClick(){
-                if(!this.user.name){
+                if(!this.userName){
                     this.showModal = true;
                 }
             },
             async handleSubmit() {
-                if(!this.user.name) {
+                if(!this.userName) {
                     this.showModal = true;
                     return;
                 }
@@ -38,12 +39,14 @@ import { createNewPost } from '../services/posts';
                 try {
                     await createNewPost({
                         email: this.user.email,
-                        name: this.user.name,
+                        name: this.userName,
                         content: this.newPost.content,
                         like: this.newPost.like,
                         user_id: this.user.id,
                     });
+                    console.log(this.newPost)
                     this.newPost.content = '';
+                    
                 } catch (err) {
                     console.log('Hubo un error al intentar crear un nuevo posteo', err);
                 }
@@ -59,10 +62,12 @@ import { createNewPost } from '../services/posts';
                 console.log(this.userProfile)
             }
         },
-        mounted() {
+        async mounted() {
             this.unsubscribe = suscribeToAuthStateChanges(userState => {
-                    this.user = userState;
-                }); 
+                this.user = userState;
+            }); 
+            this.userName = await getUserById(this.user.id);
+            this.userName = this.userName[0].name;
         },
         unmounted() {
             console.log('[>>>UNMOUNTED_DEBUG<<<] Profile desmontado');
@@ -77,7 +82,7 @@ import { createNewPost } from '../services/posts';
 <template>
     <section class=" w-3xl  flex flex-col items-center mb-8 border-b-1 pb-6 pt-11" id="make-post">
         <!-- <h2 v-if="userProfile" class="text-lg">{{ userProfile[0].name }}</h2> -->
-        <h2 class="text-lg">{{ user.email }}</h2>
+        <h2 class="text-lg">{{ this.userName || user.email }}</h2>
         <form action="#" @submit.prevent="handleSubmit()">
             <div>
                 <label for="content"></label>

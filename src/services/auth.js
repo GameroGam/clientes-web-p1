@@ -93,9 +93,6 @@ export async function logout () {
         id: null,
         email: null,
     });
-    
-
-
 }
 
 
